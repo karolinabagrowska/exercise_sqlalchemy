@@ -46,6 +46,6 @@ async def get_suppliers_product(id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404)
     else:
 
-        return crud.get_product(db=db, id = Supplier.SupplierID)
+        return crud.get_product(db, id)
 
 
