@@ -43,3 +43,19 @@ class Region(BaseModel):
     class Config:
         orm_mode = True
 
+class Category(BaseModel):
+    CategoryID: PositiveInt
+    CategoryName: Text
+
+    class Config:
+        orm_mode = True
+
+class Product(BaseModel):
+    ProductID: PositiveInt
+    ProductName: Text
+    Category: Category
+    Discontinued: int
+
+    class Config:
+        orm_mode = True
+

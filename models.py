@@ -10,6 +10,8 @@ from sqlalchemy import (
     Text,
 )
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
+from sqlalchemy.sql.schema import ForeignKey
 from sqlalchemy.sql.sqltypes import NullType
 
 Base = declarative_base()
@@ -23,6 +25,7 @@ class Category(Base):
     CategoryName = Column(String(15), nullable=False)
     Description = Column(Text)
     Picture = Column(LargeBinary)
+    Products = relationship("Product", back_populates="Category")
 
 
 class Customercustomerdemo(Base):
@@ -120,13 +123,14 @@ class Product(Base):
     ProductID = Column(SmallInteger, primary_key=True)
     ProductName = Column(String(40), nullable=False)
     SupplierID = Column(SmallInteger)
-    CategoryID = Column(SmallInteger)
+    CategoryID = Column(SmallInteger, ForeignKey('categories.CategoryID'))
     QuantityPerUnit = Column(String(20))
     UnitPrice = Column(Float)
     UnitsInStock = Column(SmallInteger)
     UnitsOnOrder = Column(SmallInteger)
     ReorderLevel = Column(SmallInteger)
     Discontinued = Column(Integer, nullable=False)
+    Category = relationship("Category", back_populates="Products")
 
 
 class Region(Base):

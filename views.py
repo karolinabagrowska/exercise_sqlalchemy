@@ -1,3 +1,4 @@
+from models import Supplier
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -38,5 +39,13 @@ async def get_suppliers(db: Session = Depends(get_db)):
 async def get_regions(db: Session = Depends(get_db)):
     return crud.get_regions
 
+@router.get("/suppliers/{id}/products", response_model=List[schemas.Product])
+async def get_suppliers_product(id: int, db: Session = Depends(get_db)):
+    check_id = crud.get_supplier(db, id)
+    if check_id is None:
+        raise HTTPException(status_code=404)
+    else:
+
+        return crud.get_product(db=db, id = Supplier.SupplierID)
 
 

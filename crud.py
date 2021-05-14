@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy.sql.expression import asc
 
 import models
 
@@ -22,3 +23,6 @@ def get_supplier(db: Session, id: int):
 
 def get_regions(db: Session):
     return db.query(models.Region).all()
+
+def get_product(db: Session, id: int):
+    return db.query(models.Product).filter(models.Product.SupplierID == id).order_by(models.Product.ProductID.desc()).all()
