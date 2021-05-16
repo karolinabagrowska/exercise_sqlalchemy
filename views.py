@@ -1,3 +1,4 @@
+from starlette import responses, status
 from models import Supplier
 from typing import List
 
@@ -47,5 +48,11 @@ async def get_suppliers_product(id: int, db: Session = Depends(get_db)):
     else:
 
         return crud.get_product(db, id)
+
+
+@router.post("/suppliers", response_model=schemas.Supplier, status_code=status.HTTP_201_CREATED)
+async def post_supplier(supplier_new: schemas.SupplierNew, db: Session = Depends(get_db)):
+    return crud.post_supplier(db, supplier_new)
+    
 
 

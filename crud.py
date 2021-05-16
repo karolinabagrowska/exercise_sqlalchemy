@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.expression import asc
-
-import models
+import schemas
+import models, models2
 
 
 def get_shippers(db: Session):
@@ -26,3 +26,19 @@ def get_regions(db: Session):
 
 def get_product(db: Session, id: int):
     return db.query(models.Product).filter(models.Product.SupplierID == id).order_by(models.Product.ProductID.desc()).all()
+
+def post_supplier(db: Session, supplier_new: schemas.SupplierNew):
+    supplier_add = models2.Supplier(
+        CompanyName = supplier_new.CompanyName,
+        ContactName = supplier_new.ContactName,
+        ContactTitle = supplier_new.ContactTitle,
+        Address = supplier_new.Address,
+        City = supplier_new.City,
+        PostalCode = supplier_new.PostalCode,
+        Country = supplier_new.Country,
+        Phone = supplier_new.Phone
+    )
+    db.add(supplier_add)
+    db.commit()
+    db.refresh(supplier_add)
+    return supplier_add
