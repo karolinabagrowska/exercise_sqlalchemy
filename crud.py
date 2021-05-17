@@ -52,3 +52,10 @@ def put_supplier(db: Session, supplier: schemas.SupplierPut, supplier_id: int):
     db.commit()
     db.refresh(db_supplier)
     return db_supplier
+
+def delete_supplier(db: Session, supplier_id: int):
+    db_delete = db.query(models2.Supplier).filter(models2.Supplier.SupplierID == supplier_id).first()
+    db.delete(db_delete)
+    db.commit()
+    return 
+    

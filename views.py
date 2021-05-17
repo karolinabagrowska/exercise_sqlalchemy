@@ -2,7 +2,7 @@ from starlette import responses, status
 from models import Supplier
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
 from pydantic import PositiveInt
 from sqlalchemy.orm import Session
 
@@ -60,4 +60,11 @@ async def put_supplier(supplier: schemas.SupplierPut, supplier_id: int, db: Sess
     if check_id is None:
         raise HTTPException(status_code=404)
     return crud.put_supplier(db, supplier, supplier_id)
+
+@router.delete("/suppliers/{supplier_id}", status_code=status.HTTP_204_NO_CONTENT, response_class= Response)
+async def delete_supplier(supplier_id: int, db: Session = Depends(get_db)):
+    check_id = crud.get_supplier(db, supplier_id)
+    if check_id is None:
+        raise HTTPException(status_code=404)
+    return crud.delete_supplier(db, supplier_id)
 
