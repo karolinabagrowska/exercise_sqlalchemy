@@ -42,3 +42,13 @@ def post_supplier(db: Session, supplier_new: schemas.SupplierNew):
     db.commit()
     db.refresh(supplier_add)
     return supplier_add
+
+def put_supplier(db: Session, supplier: schemas.SupplierPut, supplier_id: int):
+    db_supplier = db.query(models2.Supplier).filter(models2.Supplier.SupplierID == supplier_id).one_or_none()
+    for var, value in vars(supplier).items():
+        setattr(db_supplier, var, value) if value else None
+
+    db.merge(db_supplier)
+    db.commit()
+    db.refresh(db_supplier)
+    return db_supplier

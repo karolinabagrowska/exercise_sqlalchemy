@@ -54,5 +54,10 @@ async def get_suppliers_product(id: int, db: Session = Depends(get_db)):
 async def post_supplier(supplier_new: schemas.SupplierNew, db: Session = Depends(get_db)):
     return crud.post_supplier(db, supplier_new)
     
-
+@router.put("/suppliers/{supplier_id}")
+async def put_supplier(supplier: schemas.SupplierPut, supplier_id: int, db: Session = Depends(get_db)):
+    check_id = crud.get_supplier(db, supplier_id)
+    if check_id is None:
+        raise HTTPException(status_code=404)
+    return crud.put_supplier(db, supplier, supplier_id)
 
